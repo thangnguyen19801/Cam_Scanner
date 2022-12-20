@@ -1,4 +1,4 @@
-package com.example.cam_scanner;
+package com.example.cam_scanner.ImageToPdfConverter;
 
 import android.content.Context;
 import android.content.Intent;
