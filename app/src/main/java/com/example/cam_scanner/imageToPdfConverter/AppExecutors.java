@@ -1,4 +1,4 @@
-package com.example.cam_scanner.ImageToPdfConverter;
+package com.example.cam_scanner.imageToPdfConverter;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

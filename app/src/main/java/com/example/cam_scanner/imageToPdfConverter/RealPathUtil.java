@@ -1,4 +1,4 @@
-package com.example.cam_scanner.ImageToPdfConverter;
+package com.example.cam_scanner.imageToPdfConverter;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;

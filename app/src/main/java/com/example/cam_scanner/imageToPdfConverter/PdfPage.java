@@ -1,8 +1,6 @@
-package com.example.cam_scanner.ImageToPdfConverter;
+package com.example.cam_scanner.imageToPdfConverter;
 
 import android.content.Context;
-
-import com.example.cam_scanner.ImageToPdfConverter.PdfImageSetting;
 
 import java.util.ArrayList;
 
