@@ -2,6 +2,7 @@ package com.example.cam_scanner.database;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
 
@@ -37,7 +38,8 @@ public class HistoryDatabaseTest {
     public void writeUserAndReadHistory() {
         History history = new History("path", "today");
         historyDao.addHistory(history);
-        List<History> histories = historyDao.getHistoryById(0);
-        assertThat(histories, equalTo(history));
+        List<History> histories = historyDao.getAllHistory();
+        assertEquals(histories.get(0).getFile_path(), history.getFile_path());
+        assertEquals(histories.get(0).getDate(), history.getDate());
     }
 }
