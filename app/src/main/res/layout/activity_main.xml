@@ -60,6 +60,7 @@
         android:layout_marginEnd="16dp" />
     
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mainRecycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

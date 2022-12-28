@@ -14,19 +14,16 @@ public class SplashActivity extends AppCompatActivity {
 
     final Intent i = new Intent(SplashActivity.this, MainActivity.class);
 
-    Thread thread = new Thread()
-    {
-      public void run() {
-        try {
-          sleep(1000);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        } finally {
-          startActivity(i);
-          finish();
-        }
+    Thread thread = new Thread(() -> {
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      } finally {
+        startActivity(i);
+        finish();
       }
-    };
+    });
     thread.start();
   }
 }

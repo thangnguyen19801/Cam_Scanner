@@ -2,4 +2,10 @@
     <string name="app_name">Cam Scanner</string>
     <string name="title_home">Home</string>
     <string name="title_documents">Documents</string>
+    <string name="title_action_share">Share</string>
+    <string name="tittle_action_delete">Delete</string>
+    <string name="title_action_select_all">Select all</string>
+
+    <string name="OK">OK</string>
+    <string name="Cancel">Cancel</string>
 </resources>

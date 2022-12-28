@@ -1,6 +1,7 @@
 package com.example.cam_scanner.adapter;
 
 import android.content.Context;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +19,26 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class RecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<File> items = new ArrayList<>();
     private Context context;
     private int current_select_index = -1;
     private OnItemClickListener onItemClickListener;
+    private SparseBooleanArray selected_items;
+
+    public MainAdapter(Context context, List<File> items) {
+        this.context = context;
+        this.items = items;
+        selected_items = new SparseBooleanArray();
+    }
 
     public interface OnItemClickListener {
         void onItemClick(View view, File obj, int position);
         void onLongItemClick(View view, File obj, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     public class FileItemHolder extends RecyclerView.ViewHolder {
@@ -81,6 +93,14 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return items.size();
     }
 
+    public List<Integer> getSelectedItems() {
+        List<Integer> items = new ArrayList<Integer>();
+        for(int i = 0; i < selected_items.size(); i++) {
+            items.add(selected_items.keyAt(i));
+        }
+        return items;
+    }
+
     public String getSize(long size) {
         String[] sizeUnit = {"bytes", "KB", "MB", "GB", "TB", "PB"};
         double lastSize = size;
@@ -91,6 +111,35 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             lastSize /= 1024;
             index++;
         }
-        return sizeFormatter.format(lastSize).concat(sizeUnit[index]);
+        return sizeFormatter.format(lastSize).concat(" " + sizeUnit[index]);
+    }
+
+    public int getSelectedItemsCount() {
+        return selected_items.size();
+    }
+
+    public void toggleSelection(int position) {
+        if(selected_items.get(position, false)) {
+            selected_items.delete(position);
+        } else {
+            selected_items.put(position, true);
+        }
+        notifyItemChanged(position);
+    }
+
+    public void selectAll() {
+        for(int i = 0; i < items.size(); i++) {
+            selected_items.put(i, true);
+            notifyItemChanged(i);
+        }
+    }
+
+    public void deleteSelections() {
+        selected_items.clear();
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+        items.remove(position);
     }
 }

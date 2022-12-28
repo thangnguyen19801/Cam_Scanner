@@ -35,8 +35,6 @@ public class PermissionUtil {
         return INSTANCE;
     }
 
-
-
     public void askPermissions(Context context, ActivityResultLauncher<String[]> multiplePermissionLauncher, String[] permissions) {
         if(!hasPermissions(context, permissions)) {
             Log.d("PERMISSIONS", "Launching multiple contract permission launcher for ALL required permissions");

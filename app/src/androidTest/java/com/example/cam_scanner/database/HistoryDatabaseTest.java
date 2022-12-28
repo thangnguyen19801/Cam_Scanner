@@ -35,7 +35,7 @@ public class HistoryDatabaseTest {
     }
 
     @Test
-    public void writeUserAndReadHistory() {
+    public void writeHistoryAndReadHistory() {
         History history = new History("path", "today");
         historyDao.addHistory(history);
         List<History> histories = historyDao.getAllHistory();
