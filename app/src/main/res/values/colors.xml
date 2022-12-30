@@ -8,4 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorAccent">#23C40C</color>
+    <color name="banner">#8D242920</color>
+    <color name="blue">#2374e1</color>
 </resources>

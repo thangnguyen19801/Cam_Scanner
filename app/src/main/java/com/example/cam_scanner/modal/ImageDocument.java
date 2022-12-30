@@ -34,5 +34,12 @@ public class ImageDocument {
             fileName = "No name";
         }
     }
-//
+
+    public Uri getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(Uri imageUri) {
+        this.imageUri = imageUri;
+    }
 }

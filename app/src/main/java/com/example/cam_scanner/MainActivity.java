@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-    Bitmap selectedImageBitmap;
     Button camera_open_id;
     Button BSelectImage;
     ImageView IVPreviewImage;
@@ -52,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityResultContracts.RequestMultiplePermissions multiplePermissionsContract;
     private ActivityResultLauncher<String[]> multiplePermissionLauncher;
 
+    private final static int Convert_Request_CODE = 42;
     private MainAdapter mainAdapter;
     private ActionMode actionMode;
     private ActionModeCallback actionModeCallback;
@@ -91,17 +91,20 @@ public class MainActivity extends AppCompatActivity {
 
         // handle the Choose Image button to trigger
         // the image chooser function
-        BSelectImage.setOnClickListener(v -> imageChooser());
+        BSelectImage.setOnClickListener(v -> startConvertActivity("FileSearch"));
 
         camera_open_id.setOnClickListener(v -> {
-            Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            launchCameraActivity.launch(camera_intent);
+            startConvertActivity("CameraActivity");
         });
 
         // set data and list history
         recyclerView = findViewById(R.id.mainRecycleView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
+        CreateDataSource();
+    }
+
+    private void CreateDataSource() {
         items = new ArrayList<File>();
 
         File root = getFilesDir();
@@ -120,50 +123,28 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(mainAdapter);
     }
 
-    private void imageChooser() {
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-
-        launchSomeActivity.launch(i);
+    private void startConvertActivity(String message) {
+        Intent intent = new Intent(getApplicationContext(), PreviewPdfActivity.class);
+        intent.putExtra("ActivityAction", message);
+        launchAddImage.launch(intent);
     }
 
-    ActivityResultLauncher<Intent> launchSomeActivity
-            = registerForActivityResult(
-            new ActivityResultContracts
-                    .StartActivityForResult(),
-            result -> {
-                if (result.getResultCode()
-                        == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    if (data != null
-                            && data.getData() != null) {
-                        Uri selectedImageUri = data.getData();
-                        try {
-                            selectedImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        IVPreviewImage.setImageBitmap(
-                                selectedImageBitmap);
-                    }
-                }
-            });
 
-    ActivityResultLauncher<Intent> launchCameraActivity
-            = registerForActivityResult(
-            new ActivityResultContracts
-                    .StartActivityForResult(),
-            result -> {
-                if (result.getResultCode()
-                        == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    if (data != null && data.getExtras() != null) {
-                        selectedImageBitmap = (Bitmap) data.getExtras().get("data");
-                        IVPreviewImage.setImageBitmap(selectedImageBitmap);
+    ActivityResultLauncher<Intent> launchAddImage =
+            registerForActivityResult(
+                    new ActivityResultContracts
+                            .StartActivityForResult(),
+                    result -> {
+                        if(result.getResultCode() == RESULT_OK) {
+                            Intent data = result.getData();
+                            if(data != null) {
+                                CreateDataSource();
+                                mainAdapter.notifyItemInserted(items.size()-1);
+                            }
+                        }
                     }
-                }
-            });
+            );
+
 
     private class mOnItemClickListener implements MainAdapter.OnItemClickListener {
         private ActionModeCallback actionModeCallback;
